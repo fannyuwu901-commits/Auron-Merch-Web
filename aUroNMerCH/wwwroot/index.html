@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Auron Merch</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header>
+        <h1>Auron Merch</h1>
+    </header>
+
+    <section class="form-container">
+        <h2>Agregar Producto</h2>
+        <input type="text" id="nombre" placeholder="Nombre del producto">
+        <input type="number" id="precio" placeholder="Precio">
+        <input type="file" id="imagen">
+        <button onclick="crearProducto()">Guardar</button>
+    </section>
+
+    <section class="productos">
+        <h2>Productos</h2>
+        <div id="contenedorProductos" class="grid"></div>
+    </section>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

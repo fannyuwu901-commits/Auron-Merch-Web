@@ -5,40 +5,56 @@ using Microsoft.EntityFrameworkCore;
 [Route("api/[controller]")]
 public class ProductosController : ControllerBase
 {
-	private readonly AppDbContext _context;
+    private readonly AppDbContext _context;
 
-	public ProductosController(AppDbContext context)
-	{
-		_context = context;
-	}
+    public ProductosController(AppDbContext context)
+    {
+        _context = context;
+    }
 
-	// GET: api/productos
-	[HttpGet]
-	public async Task<IActionResult> Get()
-	{
-		var productos = await _context.Productos.ToListAsync();
-		return Ok(productos);
-	}
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        var productos = await _context.Productos.ToListAsync();
+        return Ok(productos);
+    }
 
-	// POST: api/productos
-	[HttpPost]
-	public async Task<IActionResult> Post(Producto producto)
-	{
-		_context.Productos.Add(producto);
-		await _context.SaveChangesAsync();
-		return Ok(producto);
-	}
+    [HttpPost]
+    public async Task<IActionResult> Post([FromForm] Producto producto, IFormFile? imagen)
+    {
+        if (imagen != null && imagen.Length > 0)
+        {
+            var ruta = Path.Combine("wwwroot/images");
 
-	// DELETE: api/productos/{id}
-	[HttpDelete("{id}")]
-	public async Task<IActionResult> Delete(int id)
-	{
-		var producto = await _context.Productos.FindAsync(id);
-		if (producto == null) return NotFound();
+            if (!Directory.Exists(ruta))
+                Directory.CreateDirectory(ruta);
 
-		_context.Productos.Remove(producto);
-		await _context.SaveChangesAsync();
+            var nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(imagen.FileName);
+            var rutaCompleta = Path.Combine(ruta, nombreArchivo);
 
-		return Ok();
-	}
+            using (var stream = new FileStream(rutaCompleta, FileMode.Create))
+            {
+                await imagen.CopyToAsync(stream);
+            }
+
+            producto.ImagenUrl = "/images/" + nombreArchivo;
+        }
+
+        _context.Productos.Add(producto);
+        await _context.SaveChangesAsync();
+
+        return Ok(producto);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var producto = await _context.Productos.FindAsync(id);
+        if (producto == null) return NotFound();
+
+        _context.Productos.Remove(producto);
+        await _context.SaveChangesAsync();
+
+        return Ok();
+    }
 }
