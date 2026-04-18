@@ -57,4 +57,37 @@ public class ProductosController : ControllerBase
 
         return Ok();
     }
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(int id, [FromForm] Producto producto, IFormFile? imagen)
+    {
+        var productoDb = await _context.Productos.FindAsync(id);
+
+        if (productoDb == null)
+            return NotFound();
+
+        productoDb.Nombre = producto.Nombre;
+        productoDb.Precio = producto.Precio;
+
+        if (imagen != null && imagen.Length > 0)
+        {
+            var ruta = Path.Combine("wwwroot/images");
+
+            if (!Directory.Exists(ruta))
+                Directory.CreateDirectory(ruta);
+
+            var nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(imagen.FileName);
+            var rutaCompleta = Path.Combine(ruta, nombreArchivo);
+
+            using (var stream = new FileStream(rutaCompleta, FileMode.Create))
+            {
+                await imagen.CopyToAsync(stream);
+            }
+
+            productoDb.ImagenUrl = "/images/" + nombreArchivo;
+        }
+
+        await _context.SaveChangesAsync();
+
+        return Ok(productoDb);
+    }
 }

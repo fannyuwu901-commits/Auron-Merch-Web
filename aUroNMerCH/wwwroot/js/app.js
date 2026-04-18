@@ -2,7 +2,12 @@ const API_URL = "http://localhost:5130/api/productos";
 
 let editandoId = null;
 
-document.addEventListener("DOMContentLoaded", obtenerProductos);
+document.addEventListener("DOMContentLoaded", () => {
+    obtenerProductos();
+
+    // Preview de imagen
+    document.getElementById("imagen").addEventListener("change", mostrarPreview);
+});
 
 // 🔹 OBTENER PRODUCTOS
 async function obtenerProductos() {
@@ -20,22 +25,26 @@ async function obtenerProductos() {
             let media = "";
 
             if (p.imagenUrl) {
-                media = `<img src="${p.imagenUrl}" alt="${p.nombre}">`;
+                media = `<img src="http://localhost:5130${p.imagenUrl}" alt="${p.nombre}">`;
             }
 
             card.innerHTML = `
                 ${media}
                 <h3>${p.nombre}</h3>
                 <p>Precio: $${p.precio ?? 0}</p>
+                <p class="categoria">${p.categoria ?? "Sin categoría"}</p>
 
-                <button onclick="cargarEdicion(${p.id}, '${p.nombre}', ${p.precio})">
-                    Editar
-                </button>
-
-                <button class="btn-delete" onclick="eliminarProducto(${p.id})">
-                    Eliminar
-                </button>
+                <button class="btn-edit">Editar</button>
+                <button class="btn-delete">Eliminar</button>
             `;
+
+            card.querySelector(".btn-edit").onclick = () => {
+                cargarEdicion(p);
+            };
+
+            card.querySelector(".btn-delete").onclick = () => {
+                eliminarProducto(p.id);
+            };
 
             contenedor.appendChild(card);
         });
@@ -49,43 +58,47 @@ async function obtenerProductos() {
 async function guardarProducto() {
     const nombre = document.getElementById("nombre").value;
     const precio = parseFloat(document.getElementById("precio").value);
+    const categoria = document.getElementById("categoria").value;
     const imagen = document.getElementById("imagen").files[0];
 
-    if (!nombre || isNaN(precio)) {
-        alert("Completa los campos correctamente");
+    if (!nombre || isNaN(precio) || !categoria) {
+        alert("Completa todos los campos");
         return;
     }
 
     const formData = new FormData();
     formData.append("Nombre", nombre);
     formData.append("Precio", precio);
+    formData.append("Categoria", categoria);
 
     if (imagen) {
         formData.append("imagen", imagen);
     }
 
     try {
+        let res;
+
         if (editandoId === null) {
             // CREATE
-            await fetch(API_URL, {
+            res = await fetch(API_URL, {
                 method: "POST",
                 body: formData
             });
         } else {
-            // UPDATE (sin cambiar imagen por ahora)
-            await fetch(`${API_URL}/${editandoId}`, {
+            // UPDATE
+            res = await fetch(`${API_URL}/${editandoId}`, {
                 method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    nombre,
-                    precio,
-                    imagenUrl: null
-                })
+                body: formData
             });
 
             editandoId = null;
+        }
+
+        if (!res.ok) {
+            const error = await res.text();
+            console.error("ERROR:", error);
+            alert("Error en el servidor");
+            return;
         }
 
         limpiarInputs();
@@ -97,19 +110,37 @@ async function guardarProducto() {
 }
 
 // 🔹 CARGAR PARA EDITAR
-function cargarEdicion(id, nombre, precio) {
-    document.getElementById("nombre").value = nombre;
-    document.getElementById("precio").value = precio;
+function cargarEdicion(producto) {
+    console.log("EDITANDO:", producto.id);
 
-    editandoId = id;
+    document.getElementById("nombre").value = producto.nombre;
+    document.getElementById("precio").value = producto.precio;
+    document.getElementById("categoria").value = producto.categoria;
+
+    document.getElementById("tituloForm").textContent = "Editando producto";
+    document.getElementById("btnGuardar").textContent = "Actualizar";
+    document.getElementById("btnCancelar").style.display = "inline-block";
+
+    if (producto.imagenUrl) {
+        const preview = document.getElementById("preview");
+        preview.src = "http://localhost:5130" + producto.imagenUrl;
+        preview.style.display = "block";
+    }
+
+    editandoId = producto.id;
 }
 
 // 🔹 ELIMINAR
 async function eliminarProducto(id) {
     try {
-        await fetch(`${API_URL}/${id}`, {
+        const res = await fetch(`${API_URL}/${id}`, {
             method: "DELETE"
         });
+
+        if (!res.ok) {
+            alert("Error al eliminar");
+            return;
+        }
 
         obtenerProductos();
 
@@ -118,9 +149,35 @@ async function eliminarProducto(id) {
     }
 }
 
+// 🔹 PREVIEW IMAGEN
+function mostrarPreview(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById("preview");
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            preview.src = e.target.result;
+            preview.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
 // 🔹 LIMPIAR INPUTS
 function limpiarInputs() {
     document.getElementById("nombre").value = "";
     document.getElementById("precio").value = "";
+    document.getElementById("categoria").value = "";
     document.getElementById("imagen").value = "";
+
+    document.getElementById("tituloForm").textContent = "Agregar Producto";
+    document.getElementById("btnGuardar").textContent = "Guardar";
+    document.getElementById("btnCancelar").style.display = "none";
+
+    const preview = document.getElementById("preview");
+    preview.src = "";
+    preview.style.display = "none";
+
+    editandoId = null;
 }

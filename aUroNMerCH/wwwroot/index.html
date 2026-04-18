@@ -12,11 +12,29 @@
     </header>
 
     <section class="form-container">
-        <h2>Agregar Producto</h2>
+        <h2 id="tituloForm">Agregar Producto</h2>
+
         <input type="text" id="nombre" placeholder="Nombre del producto">
         <input type="number" id="precio" placeholder="Precio">
-        <input type="file" id="imagen">
-        <button onclick="crearProducto()">Guardar</button>
+        <select id="categoria">
+            <option value="">Selecciona categoría</option>
+            <option value="T-Shirt">T-Shirt</option>
+            <option value="Hoodie">Hoodie</option>
+            <option value="Zapato">Zapato</option>
+            <option value="Accesorio">Accesorio</option>
+        </select>
+
+        <input type="file" id="imagen" name="imagen" accept="image/*">
+
+        <!-- 🔥 PREVIEW -->
+        <img id="preview" style="display:none; width:120px; margin-top:10px; border-radius:10px;">
+
+        <div class="form-buttons">
+            <button id="btnGuardar" onclick="guardarProducto()">Guardar</button>
+            <button id="btnCancelar" onclick="limpiarInputs()" style="display:none;">
+                Cancelar
+            </button>
+        </div>
     </section>
 
     <section class="productos">
