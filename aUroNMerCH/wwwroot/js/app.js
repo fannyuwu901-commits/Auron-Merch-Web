@@ -1,8 +1,29 @@
 const API_URL = "http://localhost:5130/api/productos";
+const user = JSON.parse(localStorage.getItem("user"));
+
+if (!user) {
+    window.location.href = "login.html";
+}
+
+// 🔥 SOLO ADMIN
+if (user.rol !== "Admin") {
+    alert("No tienes permisos");
+    window.location.href = "login.html";
+}
 
 let editandoId = null;
 
+
 document.addEventListener("DOMContentLoaded", () => {
+    if (user.rol === "Admin") {
+        card.innerHTML += `
+        <button class="btn-edit">Editar</button>
+        <button class="btn-delete">Eliminar</button>
+    `;
+
+        card.querySelector(".btn-edit").onclick = () => cargarEdicion(p);
+        card.querySelector(".btn-delete").onclick = () => eliminarProducto(p.id);
+    }
     obtenerProductos();
 
     // Preview de imagen
