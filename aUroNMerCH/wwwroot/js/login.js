@@ -3,9 +3,12 @@ const API_AUTH = "http://localhost:5130/api/auth";
 async function login() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
+    const error = document.getElementById("error");
+
+    error.textContent = "";
 
     if (!username || !password) {
-        alert("Completa los campos");
+        error.textContent = "Completa los campos";
         return;
     }
 
@@ -19,19 +22,21 @@ async function login() {
         });
 
         if (!res.ok) {
-            alert("Usuario o contraseña incorrectos");
+            error.textContent = "Usuario o contraseña incorrectos";
             return;
         }
 
-        const user = await res.json();
+        const data = await res.json();
 
-        // Guardar sesión simple
-        localStorage.setItem("user", JSON.stringify(user));
+        // 🔐 GUARDAR TOKEN JWT
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
 
-        // Redirigir a tienda
+        // 👉 Redirigir
         window.location.href = "index.html";
 
-    } catch (error) {
-        console.error("Error:", error);
+    } catch (err) {
+        console.error(err);
+        error.textContent = "Error de conexión";
     }
 }
