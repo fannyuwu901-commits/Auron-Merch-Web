@@ -2,16 +2,23 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Login - Auron Merch</title>
+    <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
 
-    <h2>Iniciar Sesión</h2>
+    <div class="login-container">
 
-    <input type="text" id="username" placeholder="Usuario">
-    <input type="password" id="password" placeholder="Contraseña">
+        <h2>Iniciar Sesión</h2>
 
-    <button onclick="login()">Entrar</button>
+        <input type="text" id="username" placeholder="Usuario">
+        <input type="password" id="password" placeholder="Contraseña">
+
+        <button onclick="login()">Entrar</button>
+
+        <p id="error" class="error"></p>
+
+    </div>
 
     <script src="js/login.js"></script>
 
