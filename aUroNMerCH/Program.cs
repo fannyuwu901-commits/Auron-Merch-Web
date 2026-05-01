@@ -1,13 +1,36 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Services
+
+var key = "SUPER_SECRET_KEY_123456789"; 
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+    };
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -16,15 +39,14 @@ builder.Services.AddCors(options =>
                         .AllowAnyHeader());
 });
 
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
-// 🔴 AQUÍ SE USA CORS
 app.UseCors("AllowAll");
 
-// Swagger (solo en desarrollo)
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -33,10 +55,27 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication(); 
+app.UseAuthorization();  
+
 app.UseStaticFiles();
 
-app.UseAuthorization();
-
 app.MapControllers();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    if (!db.Usuarios.Any())
+    {
+        db.Usuarios.Add(new Usuario
+        {
+            Username = "admin",
+            Password = "1234",
+            Rol = "Admin"
+        });
+
+        db.SaveChanges();
+    }
+}
 
 app.Run();

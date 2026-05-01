@@ -1,5 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -12,28 +16,48 @@ public class AuthController : ControllerBase
         _context = context;
     }
 
-    // 🔹 LOGIN
+   
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] Usuario user)
+    public async Task<IActionResult> Login([FromBody] Usuario login)
     {
-        var usuario = await _context.Usuarios
+        var user = await _context.Usuarios
             .FirstOrDefaultAsync(u =>
-                u.Username == user.Username &&
-                u.Password == user.Password);
+                u.Username == login.Username &&
+                u.Password == login.Password);
 
-        if (usuario == null)
+        if (user == null)
             return Unauthorized("Credenciales incorrectas");
 
-        return Ok(usuario);
-    }
+       
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.Name, user.Username),
+            new Claim(ClaimTypes.Role, user.Rol)
+        };
 
-    // 🔹 REGISTRO (opcional)
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] Usuario user)
-    {
-        _context.Usuarios.Add(user);
-        await _context.SaveChangesAsync();
+        var key = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes("SUPER_SECRET_KEY_123456789")
+        );
 
-        return Ok(user);
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(
+            claims: claims,
+            expires: DateTime.Now.AddHours(2),
+            signingCredentials: creds
+        );
+
+        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+        return Ok(new
+        {
+            token = tokenString,
+            user = new
+            {
+                user.Id,
+                user.Username,
+                user.Rol
+            }
+        });
     }
 }

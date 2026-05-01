@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -19,6 +20,7 @@ public class ProductosController : ControllerBase
         return Ok(productos);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Post([FromForm] Producto producto, IFormFile? imagen)
     {
@@ -46,6 +48,7 @@ public class ProductosController : ControllerBase
         return Ok(producto);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
@@ -57,6 +60,7 @@ public class ProductosController : ControllerBase
 
         return Ok();
     }
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, [FromForm] Producto producto, IFormFile? imagen)
     {

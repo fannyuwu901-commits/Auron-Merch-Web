@@ -2,9 +2,7 @@ public class Usuario
 {
     public int Id { get; set; }
 
-    public string Username { get; set; }
-
-    public string Password { get; set; }
-
-    public string Rol { get; set; } = "Cliente";
-}   
+    public required string Username { get; set; }
+    public required string Password { get; set; }
+    public required string Rol { get; set; }
+}

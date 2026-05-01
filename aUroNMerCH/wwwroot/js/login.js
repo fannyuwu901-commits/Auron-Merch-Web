@@ -1,42 +1,27 @@
-const API_AUTH = "http://localhost:5130/api/auth";
+const API_LOGIN = "http://localhost:5130/api/auth/login";
 
 async function login() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-    const error = document.getElementById("error");
 
-    error.textContent = "";
+    const res = await fetch(API_LOGIN, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, password })
+    });
 
-    if (!username || !password) {
-        error.textContent = "Completa los campos";
+    if (!res.ok) {
+        alert("Usuario o contraseña incorrectos");
         return;
     }
 
-    try {
-        const res = await fetch(`${API_AUTH}/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ username, password })
-        });
+    const data = await res.json();
 
-        if (!res.ok) {
-            error.textContent = "Usuario o contraseña incorrectos";
-            return;
-        }
+    
+    localStorage.setItem("token", data.token);
 
-        const data = await res.json();
-
-        // 🔐 GUARDAR TOKEN JWT
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-
-        // 👉 Redirigir
-        window.location.href = "index.html";
-
-    } catch (err) {
-        console.error(err);
-        error.textContent = "Error de conexión";
-    }
+    
+    window.location.href = "index.html";
 }

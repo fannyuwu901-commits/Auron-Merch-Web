@@ -1,39 +1,27 @@
 const API_URL = "http://localhost:5130/api/productos";
 const user = JSON.parse(localStorage.getItem("user"));
+const token = localStorage.getItem("token");
 
-if (!user) {
-    window.location.href = "login.html";
-}
 
-// 🔥 SOLO ADMIN
-if (user.rol !== "Admin") {
-    alert("No tienes permisos");
+if (!user || !token) {
     window.location.href = "login.html";
 }
 
 let editandoId = null;
 
-
 document.addEventListener("DOMContentLoaded", () => {
-    if (user.rol === "Admin") {
-        card.innerHTML += `
-        <button class="btn-edit">Editar</button>
-        <button class="btn-delete">Eliminar</button>
-    `;
-
-        card.querySelector(".btn-edit").onclick = () => cargarEdicion(p);
-        card.querySelector(".btn-delete").onclick = () => eliminarProducto(p.id);
-    }
     obtenerProductos();
-
-    // Preview de imagen
     document.getElementById("imagen").addEventListener("change", mostrarPreview);
 });
 
-// 🔹 OBTENER PRODUCTOS
 async function obtenerProductos() {
     try {
-        const res = await fetch(API_URL);
+        const res = await fetch(API_URL, {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        });
+
         const productos = await res.json();
 
         const contenedor = document.getElementById("contenedorProductos");
@@ -54,18 +42,22 @@ async function obtenerProductos() {
                 <h3>${p.nombre}</h3>
                 <p>Precio: $${p.precio ?? 0}</p>
                 <p class="categoria">${p.categoria ?? "Sin categoría"}</p>
-
-                <button class="btn-edit">Editar</button>
-                <button class="btn-delete">Eliminar</button>
             `;
 
-            card.querySelector(".btn-edit").onclick = () => {
-                cargarEdicion(p);
-            };
+            if (user.rol === "Admin") {
+                const btnEdit = document.createElement("button");
+                btnEdit.textContent = "Editar";
+                btnEdit.className = "btn-edit";
+                btnEdit.onclick = () => cargarEdicion(p);
 
-            card.querySelector(".btn-delete").onclick = () => {
-                eliminarProducto(p.id);
-            };
+                const btnDelete = document.createElement("button");
+                btnDelete.textContent = "Eliminar";
+                btnDelete.className = "btn-delete";
+                btnDelete.onclick = () => eliminarProducto(p.id);
+
+                card.appendChild(btnEdit);
+                card.appendChild(btnDelete);
+            }
 
             contenedor.appendChild(card);
         });
@@ -75,7 +67,7 @@ async function obtenerProductos() {
     }
 }
 
-// 🔹 CREAR / ACTUALIZAR
+
 async function guardarProducto() {
     const nombre = document.getElementById("nombre").value;
     const precio = parseFloat(document.getElementById("precio").value);
@@ -100,15 +92,19 @@ async function guardarProducto() {
         let res;
 
         if (editandoId === null) {
-            // CREATE
             res = await fetch(API_URL, {
                 method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + token
+                },
                 body: formData
             });
         } else {
-            // UPDATE
             res = await fetch(`${API_URL}/${editandoId}`, {
                 method: "PUT",
+                headers: {
+                    "Authorization": "Bearer " + token
+                },
                 body: formData
             });
 
@@ -130,17 +126,13 @@ async function guardarProducto() {
     }
 }
 
-// 🔹 CARGAR PARA EDITAR
-function cargarEdicion(producto) {
-    console.log("EDITANDO:", producto.id);
 
+function cargarEdicion(producto) {
     document.getElementById("nombre").value = producto.nombre;
     document.getElementById("precio").value = producto.precio;
     document.getElementById("categoria").value = producto.categoria;
 
     document.getElementById("tituloForm").textContent = "Editando producto";
-    document.getElementById("btnGuardar").textContent = "Actualizar";
-    document.getElementById("btnCancelar").style.display = "inline-block";
 
     if (producto.imagenUrl) {
         const preview = document.getElementById("preview");
@@ -151,11 +143,13 @@ function cargarEdicion(producto) {
     editandoId = producto.id;
 }
 
-// 🔹 ELIMINAR
 async function eliminarProducto(id) {
     try {
         const res = await fetch(`${API_URL}/${id}`, {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
         });
 
         if (!res.ok) {
@@ -170,7 +164,7 @@ async function eliminarProducto(id) {
     }
 }
 
-// 🔹 PREVIEW IMAGEN
+
 function mostrarPreview(event) {
     const file = event.target.files[0];
     const preview = document.getElementById("preview");
@@ -185,20 +179,17 @@ function mostrarPreview(event) {
     }
 }
 
-// 🔹 LIMPIAR INPUTS
 function limpiarInputs() {
     document.getElementById("nombre").value = "";
     document.getElementById("precio").value = "";
     document.getElementById("categoria").value = "";
     document.getElementById("imagen").value = "";
 
-    document.getElementById("tituloForm").textContent = "Agregar Producto";
-    document.getElementById("btnGuardar").textContent = "Guardar";
-    document.getElementById("btnCancelar").style.display = "none";
-
     const preview = document.getElementById("preview");
     preview.src = "";
     preview.style.display = "none";
+
+    document.getElementById("tituloForm").textContent = "Agregar Producto";
 
     editandoId = null;
 }
