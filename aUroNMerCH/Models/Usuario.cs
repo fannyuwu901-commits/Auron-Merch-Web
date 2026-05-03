@@ -4,5 +4,5 @@ public class Usuario
 
     public required string Username { get; set; }
     public required string Password { get; set; }
-    public required string Rol { get; set; }
+    public string Rol { get; set; }
 }

@@ -9,19 +9,23 @@ async function login() {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({
+            Username: username,
+            Password: password
+        })
     });
 
     if (!res.ok) {
+        const error = await res.text();
+        console.error("ERROR:", error);
         alert("Usuario o contraseña incorrectos");
         return;
     }
 
     const data = await res.json();
 
-    
     localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
 
-    
     window.location.href = "index.html";
 }

@@ -16,10 +16,15 @@ public class AuthController : ControllerBase
         _context = context;
     }
 
-   
+    
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] Usuario login)
+    public async Task<IActionResult> Login([FromBody] LoginRequest login)
     {
+        if (login == null || string.IsNullOrEmpty(login.Username) || string.IsNullOrEmpty(login.Password))
+        {
+            return BadRequest("Datos inválidos");
+        }
+
         var user = await _context.Usuarios
             .FirstOrDefaultAsync(u =>
                 u.Username == login.Username &&
@@ -35,8 +40,9 @@ public class AuthController : ControllerBase
             new Claim(ClaimTypes.Role, user.Rol)
         };
 
+
         var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes("SUPER_SECRET_KEY_123456789")
+              Encoding.UTF8.GetBytes("SUPER_SECRET_KEY_123456789_ABCDEFGH_123456")
         );
 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
