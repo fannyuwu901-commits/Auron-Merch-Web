@@ -4,28 +4,37 @@ async function login() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    const res = await fetch(API_LOGIN, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            Username: username,
-            Password: password
-        })
-    });
+    try {
+        const res = await fetch(API_LOGIN, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                Username: username,
+                Password: password
+            })
+        });
 
-    if (!res.ok) {
-        const error = await res.text();
-        console.error("ERROR:", error);
-        alert("Usuario o contraseña incorrectos");
-        return;
+        const text = await res.text(); // 👈 capturamos TODO
+
+        console.log("STATUS:", res.status);
+        console.log("RESPUESTA:", text);
+
+        if (!res.ok) {
+            alert("Error: " + text);
+            return;
+        }
+
+        const data = JSON.parse(text);
+
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        window.location.href = "index.html";
+
+    } catch (error) {
+        console.error("ERROR TOTAL:", error);
+        alert("Error de conexión");
     }
-
-    const data = await res.json();
-
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("user", JSON.stringify(data.user));
-
-    window.location.href = "index.html";
 }

@@ -2,11 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using BCrypt.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-var key = "SUPER_SECRET_KEY_123456789"; 
+var key = "SUPER_SECRET_KEY_123456789_ABCDEFGH_123456";
 
 builder.Services.AddAuthentication(options =>
 {
@@ -72,9 +72,10 @@ using (var scope = app.Services.CreateScope())
         db.Usuarios.Add(new Usuario
         {
             Username = "admin",
-            Password = "1234",
+            Email = "admin@mail.com",
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword("1234"),
             Rol = "Admin"
-        });
+        }); 
 
         db.SaveChanges();
     }
