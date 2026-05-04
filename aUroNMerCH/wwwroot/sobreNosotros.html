@@ -3,26 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre Nosotros</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Sobre Nosotros — Auron</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/sobreNosotros.css">
 </head>
 <body>
 
-    <!-- HEADER -->
-    <header>
-        <div class="hamburger" aria-label="Menú">
-            <span></span><span></span><span></span>
+    <!-- ══════════════════════════════════════
+         NAVBAR (idéntico a index.html)
+    ══════════════════════════════════════ -->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleDrawer()" aria-label="Menú">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="nav-center">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-box">A</span>
+                <span class="logo-text">AURON</span>
+            </a>
+        </div>
+        <div class="nav-right">
+            <!-- Bolsa de compras SVG (igual que index.html, sin label de texto) -->
+            <button class="cart-btn" id="cartBtn" onclick="toggleCart()" aria-label="Carrito">
+                <svg class="cart-bag-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+                <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
+            </button>
+            <div class="nav-auth" id="navAuth"></div>
+        </div>
+    </nav>
+
+    <!-- ══════════════════════════════════════
+         DRAWER (menú lateral izquierdo)
+    ══════════════════════════════════════ -->
+    <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
+    <aside class="drawer" id="drawer">
+        <div class="drawer-header">
+            <span class="logo-box">A</span>
+            <span class="logo-text">AURON</span>
+            <button class="drawer-close" onclick="toggleDrawer()">✕</button>
+        </div>
+        <nav class="drawer-links">
+            <a href="index.html">Inicio</a>
+            <a href="productos.html">Productos</a>
+            <a href="sobreNosotros.html">Sobre Nosotros</a>
+            <a href="contacto.html">Contáctanos</a>
+        </nav>
+        <div class="drawer-divider"></div>
+        <div class="drawer-categorias">
+            <p class="filtro-label">CATEGORÍAS</p>
+            <a class="filtro-btn" href="productos.html?cat=Todos">Todos</a>
+            <a class="filtro-btn" href="productos.html?cat=T-Shirt">T-Shirt</a>
+            <a class="filtro-btn" href="productos.html?cat=Hoodie">Hoodie</a>
+            <a class="filtro-btn" href="productos.html?cat=Zapato">Zapato</a>
+            <a class="filtro-btn" href="productos.html?cat=Accesorio">Accesorio</a>
+        </div>
+        <div class="drawer-footer" id="drawerAuth"></div>
+    </aside>
+
+    <!-- ══════════════════════════════════════
+         CART PANEL (panel lateral derecho)
+    ══════════════════════════════════════ -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <aside class="cart-panel" id="cartPanel">
+        <div class="cart-panel-header">
+            <div class="cart-panel-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+                <span>MI CARRITO</span>
+            </div>
+            <button class="cart-panel-close" onclick="toggleCart()">✕</button>
         </div>
 
-        <a href="#" class="logo">Marca</a>
-
-        <div class="cart-icon" aria-label="Carrito">
-            <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 01-8 0" /></svg>
-            <span class="cart-badge">2</span>
+        <div class="cart-items-list" id="cartItemsList">
+            <div class="cart-empty" id="cartEmpty">
+                <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--border)">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+                <p>Tu carrito está vacío</p>
+                <span>Agrega productos para continuar</span>
+            </div>
         </div>
-    </header>
 
+        <div class="cart-footer" id="cartFooter" style="display:none;">
+            <div class="cart-subtotal">
+                <span>Subtotal</span>
+                <span id="cartSubtotal">$0.00</span>
+            </div>
+            <div class="cart-total">
+                <span>TOTAL</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="btn-checkout" onclick="checkout()">FINALIZAR COMPRA</button>
+            <button class="btn-clear-cart" onclick="vaciarCarrito()">Vaciar carrito</button>
+        </div>
+    </aside>
+
+    <!-- ══════════════════════════════════════
+         CONTENIDO EDITORIAL
+    ══════════════════════════════════════ -->
     <main>
 
         <!-- SECCIÓN 1: imagen izquierda + texto derecha -->
@@ -36,7 +125,6 @@
                     </svg>
                 </div>
             </div>
-
             <div class="text-side">
                 <span class="label-tag fade-in">Sobre nosotros</span>
                 <span class="deco-line fade-in delay-1"></span>
@@ -71,7 +159,6 @@
                     <p>Trabajamos con proveedores seleccionados que comparten nuestra visión de un comercio justo y sostenible, garantizando que cada producto cuente una historia de cuidado y dedicación.</p>
                 </div>
             </div>
-
             <div class="img-side">
                 <div class="img-placeholder">
                     <svg viewBox="0 0 60 60" fill="white">
@@ -88,7 +175,6 @@
     <!-- FOOTER -->
     <footer>
         <div class="footer-tagline">"La calidad nunca es un accidente."</div>
-
         <div class="footer-icons">
             <div class="footer-icon" title="Instagram">
                 <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" /></svg>
@@ -100,12 +186,13 @@
                 <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
             </div>
         </div>
-
         <div class="footer-copy">
-            <p>© 2025 Marca. Todos los derechos reservados.</p>
+            <p>© 2025 Auron. Todos los derechos reservados.</p>
             <p>Hecho con dedicación · República Dominicana</p>
         </div>
     </footer>
 
+    <!-- Script con toda la lógica del carrito, drawer y nav auth -->
+    <script src="js/sobreNosotros.js"></script>
 </body>
 </html>

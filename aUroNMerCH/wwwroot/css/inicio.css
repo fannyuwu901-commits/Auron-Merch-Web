@@ -19,6 +19,7 @@
     --nav-h: 58px;
     --drawer-w: 260px;
     --cart-panel-w: 360px;
+    --sidebar-w: 172px;
 }
 
 body {
@@ -77,7 +78,6 @@ body {
     padding: 6px;
     border-radius: 6px;
     transition: background 0.2s;
-    flex-shrink: 0;
 }
 
     .hamburger-btn:hover {
@@ -124,7 +124,6 @@ body {
     align-items: center;
     gap: 0.5rem;
     text-decoration: none;
-    flex-shrink: 0;
 }
 
 .logo-box {
@@ -242,7 +241,7 @@ body {
         }
 
 /* ══════════════════════════════════════
-   DRAWER
+   DRAWER (menú izquierdo)
 ══════════════════════════════════════ */
 .drawer-overlay {
     display: none;
@@ -582,6 +581,7 @@ body {
     text-align: center;
 }
 
+/* Botón eliminar item */
 .cart-item-remove {
     background: none;
     border: none;
@@ -599,7 +599,7 @@ body {
         color: var(--accent2);
     }
 
-/* Footer carrito */
+/* Footer del carrito */
 .cart-footer {
     padding: 1.2rem 1.4rem;
     border-top: 1px solid var(--border);
@@ -670,7 +670,7 @@ body {
     }
 
 /* ══════════════════════════════════════
-   FILTRO
+   FILTROS COMPARTIDOS
 ══════════════════════════════════════ */
 .filtro-label {
     font-size: 0.65rem;
@@ -690,6 +690,8 @@ body {
     text-align: left;
     transition: all 0.2s;
     font-family: 'DM Sans', sans-serif;
+    text-decoration: none;
+    display: block;
 }
 
     .filtro-btn:hover, .filtro-btn.active {
@@ -700,14 +702,8 @@ body {
     }
 
 /* ══════════════════════════════════════
-   MAIN CONTENT
+   BUSCADOR
 ══════════════════════════════════════ */
-.main-content {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 2rem 1.8rem;
-}
-
 .search-wrap {
     position: relative;
     margin-bottom: 1.4rem;
@@ -740,32 +736,219 @@ body {
     pointer-events: none;
 }
 
-.productos-header {
+.search-results {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    z-index: 200;
+    max-height: 280px;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+    .search-results.open {
+        display: block;
+    }
+
+.search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-bottom: 1px solid var(--border);
+}
+
+    .search-result-item:last-child {
+        border-bottom: none;
+    }
+
+    .search-result-item:hover {
+        background: var(--card);
+    }
+
+.sri-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    object-fit: cover;
+    background: var(--card);
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+}
+
+.sri-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.sri-name {
+    font-size: 0.85rem;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sri-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.95rem;
+    color: var(--accent);
+}
+
+/* ══════════════════════════════════════
+   HOMEPAGE LAYOUT
+══════════════════════════════════════ */
+.page-layout {
+    display: grid;
+    grid-template-columns: 1fr var(--sidebar-w);
+    min-height: calc(100vh - var(--nav-h));
+}
+
+.col-main {
+    padding: 1.6rem 1.8rem;
+    overflow: hidden;
+}
+
+/* ══════════════════════════════════════
+   HERO BANNER
+══════════════════════════════════════ */
+.hero-banner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 2.4rem;
+    min-height: 320px;
+    position: relative;
+}
+
+    .hero-banner::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 1px;
+        height: 100%;
+        background: var(--border);
+        z-index: 1;
+    }
+
+.hero-content {
+    padding: 2.4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.8rem;
+}
+
+.hero-sub {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    font-weight: 500;
+}
+
+.hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    line-height: 0.9;
+    letter-spacing: 0.04em;
+    color: var(--text);
+}
+
+.hero-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.hero-btn {
+    display: inline-block;
+    margin-top: 0.6rem;
+    padding: 10px 24px;
+    background: var(--accent);
+    color: #000;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    border-radius: 8px;
+    text-decoration: none;
+    align-self: flex-start;
+    transition: opacity 0.2s;
+}
+
+    .hero-btn:hover {
+        opacity: 0.85;
+    }
+
+.hero-img-wrap {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-img-placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 320px;
+}
+
+    .hero-img-placeholder img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+/* ══════════════════════════════════════
+   SECTION HEADER
+══════════════════════════════════════ */
+.section-header {
     display: flex;
     align-items: baseline;
-    gap: 1rem;
-    margin-bottom: 1.4rem;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
 }
 
 .section-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
+    font-size: 1.8rem;
     letter-spacing: 0.1em;
     color: var(--text);
 }
 
-.contador {
+.ver-todo-link {
     font-size: 0.8rem;
-    color: var(--muted);
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.2s;
 }
 
+    .ver-todo-link:hover {
+        opacity: 0.7;
+    }
+
 /* ══════════════════════════════════════
-   GRID
+   GRID PRODUCTOS
 ══════════════════════════════════════ */
 .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.2rem;
+    gap: 1.1rem;
 }
 
 .card {
@@ -775,6 +958,7 @@ body {
     overflow: hidden;
     transition: transform 0.22s, border-color 0.22s;
     animation: fadeUp 0.4s ease both;
+    cursor: pointer;
 }
 
     .card:hover {
@@ -796,9 +980,21 @@ body {
 
 .card img {
     width: 100%;
-    height: 240px;
+    height: 220px;
     object-fit: cover;
     display: block;
+}
+
+.img-placeholder {
+    width: 100%;
+    height: 220px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
 }
 
 .card-body {
@@ -899,9 +1095,171 @@ body {
     font-size: 0.95rem;
 }
 
+/* Placeholder X lines */
+.ph-x {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+    .ph-x::before, .ph-x::after {
+        content: '';
+        position: absolute;
+        background: var(--border);
+        width: 100%;
+        height: 1px;
+        top: 50%;
+        left: 0;
+    }
+
+    .ph-x::before {
+        transform: rotate(25deg);
+    }
+
+    .ph-x::after {
+        transform: rotate(-25deg);
+    }
+
 /* ══════════════════════════════════════
-   FORM PANEL
+   SIDEBAR DERECHO
 ══════════════════════════════════════ */
+.sidebar-right {
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    padding: 1.4rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    position: sticky;
+    top: var(--nav-h);
+    height: calc(100vh - var(--nav-h));
+    overflow-y: auto;
+}
+
+.sidebar-top-icon {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sidebar-icon-circle {
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+    .sidebar-icon-circle:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+
+.sidebar-featured {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sidebar-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+    .sidebar-card:hover {
+        border-color: var(--accent);
+    }
+
+.sb-img-wrap {
+    height: 72px;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+    .sb-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+.sb-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    padding: 5px 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-ver-todo {
+    width: 100%;
+    padding: 9px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+    .btn-ver-todo:hover {
+        background: var(--accent);
+        color: #000;
+    }
+
+.sidebar-utils {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.util-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 7px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 0.8rem;
+    transition: all 0.2s;
+}
+
+    .util-item:hover {
+        background: var(--card);
+        color: var(--text);
+    }
+
+    .util-item svg {
+        flex-shrink: 0;
+    }
+
+/* ══════════════════════════════════════
+   PÁGINA PRODUCTOS
+══════════════════════════════════════ */
+.main-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.8rem;
+}
+
 .form-container {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -996,46 +1354,20 @@ body {
         border: 1px solid var(--border);
     }
 
-/* ══════════════════════════════════════
-   PLACEHOLDERS
-══════════════════════════════════════ */
-.img-placeholder {
-    background: var(--card);
-    border-bottom: 1px solid var(--border);
+.productos-header {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    height: 240px;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.4rem;
 }
 
-.ph-x {
-    position: relative;
-    width: 100%;
-    height: 100%;
+.contador {
+    font-size: 0.8rem;
+    color: var(--muted);
 }
-
-    .ph-x::before, .ph-x::after {
-        content: '';
-        position: absolute;
-        background: var(--border);
-        width: 100%;
-        height: 1px;
-        top: 50%;
-        left: 0;
-    }
-
-    .ph-x::before {
-        transform: rotate(25deg);
-    }
-
-    .ph-x::after {
-        transform: rotate(-25deg);
-    }
 
 /* ══════════════════════════════════════
-   TOAST
+   TOAST NOTIFICACIÓN
 ══════════════════════════════════════ */
 .cart-toast {
     position: fixed;
@@ -1072,9 +1404,37 @@ body {
 /* ══════════════════════════════════════
    RESPONSIVE
 ══════════════════════════════════════ */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+    .page-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar-right {
+        display: none;
+    }
+
     .grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+    }
+
+    --cart-panel-w: 100vw;
+}
+
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-banner {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-img-wrap {
+        display: none;
     }
 
     .cart-label {
@@ -1083,11 +1443,5 @@ body {
 
     .cart-panel {
         width: 100vw;
-    }
-}
-
-@media (max-width: 480px) {
-    .grid {
-        grid-template-columns: 1fr;
     }
 }
