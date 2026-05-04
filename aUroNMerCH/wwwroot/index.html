@@ -2,45 +2,126 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auron Merch</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-    <header>
-        <h1>Auron Merch</h1>
-    </header>
+    <!-- ══════════════════════════════════════
+         LAYOUT PRINCIPAL (3 columnas)
+    ══════════════════════════════════════ -->
+    <div class="layout">
 
-    <section class="form-container">
-        <h2 id="tituloForm">Agregar Producto</h2>
+        <!-- ── SIDEBAR IZQUIERDO ── -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <span class="logo-box">A</span>
+                <span class="logo-text">AURON</span>
+            </div>
 
-        <input type="text" id="nombre" placeholder="Nombre del producto">
-        <input type="number" id="precio" placeholder="Precio">
-        <select id="categoria">
-            <option value="">Selecciona categoría</option>
-            <option value="T-Shirt">T-Shirt</option>
-            <option value="Hoodie">Hoodie</option>
-            <option value="Zapato">Zapato</option>
-            <option value="Accesorio">Accesorio</option>
-        </select>
+            <div class="search-wrap">
+                <input type="text" id="buscador" placeholder="Buscar..." oninput="filtrar()">
+                <span class="search-icon">⌕</span>
+            </div>
 
-        <input type="file" id="imagen" name="imagen" accept="image/*">
+            <!-- imagen destacada sidebar -->
+            <div class="sidebar-featured">
+                <div class="img-placeholder tall">
+                    <span class="ph-x"></span>
+                </div>
+                <p class="sidebar-desc">
+                    Merch exclusivo.<br>Edición limitada.<br>Solo para los reales.
+                </p>
+            </div>
 
-     
-        <img id="preview" style="display:none; width:120px; margin-top:10px; border-radius:10px;">
+            <!-- filtro categorías -->
+            <div class="filtro-categorias">
+                <p class="filtro-label">CATEGORÍAS</p>
+                <button class="filtro-btn active" data-cat="Todos" onclick="filtrarCategoria(this)">Todos</button>
+                <button class="filtro-btn" data-cat="T-Shirt" onclick="filtrarCategoria(this)">T-Shirt</button>
+                <button class="filtro-btn" data-cat="Hoodie" onclick="filtrarCategoria(this)">Hoodie</button>
+                <button class="filtro-btn" data-cat="Zapato" onclick="filtrarCategoria(this)">Zapato</button>
+                <button class="filtro-btn" data-cat="Accesorio" onclick="filtrarCategoria(this)">Accesorio</button>
+            </div>
+        </aside>
 
-        <div class="form-buttons">
-            <button id="btnGuardar" onclick="guardarProducto()">Guardar</button>
-            <button id="btnCancelar" onclick="limpiarInputs()" style="display:none;">
-                Cancelar
-            </button>
+        <!-- ── CONTENIDO CENTRAL ── -->
+        <main class="main-content">
+
+            <!-- Form agregar / editar (visible siempre; JS lo oculta si no es Admin) -->
+            <section class="form-container" id="formPanel">
+                <h2 id="tituloForm">Agregar Producto</h2>
+                <div class="form-grid">
+                    <input type="text" id="nombre" placeholder="Nombre del producto">
+                    <input type="number" id="precio" placeholder="Precio">
+                    <select id="categoria">
+                        <option value="">Selecciona categoría</option>
+                        <option value="T-Shirt">T-Shirt</option>
+                        <option value="Hoodie">Hoodie</option>
+                        <option value="Zapato">Zapato</option>
+                        <option value="Accesorio">Accesorio</option>
+                    </select>
+                    <label class="file-label" id="fileLabel">
+                        <input type="file" id="imagen" accept="image/*">
+                        <span id="fileLabelText">📁 Subir imagen</span>
+                    </label>
+                </div>
+                <img id="preview" style="display:none; width:140px; margin-top:12px; border-radius:8px; border:1px solid #2A2A2A;">
+                <div class="form-buttons">
+                    <button id="btnGuardar" onclick="guardarProducto()">💾 Guardar</button>
+                    <button class="btn-cancel" id="btnCancelar" onclick="limpiarInputs()" style="display:none;">✕ Cancelar</button>
+                </div>
+            </section>
+
+            <!-- Grid productos -->
+            <div class="productos-header">
+                <h2 class="section-title">PRODUCTOS</h2>
+                <span id="contadorResultados" class="contador"></span>
+            </div>
+            <div id="contenedorProductos" class="grid"></div>
+        </main>
+
+        <!-- ── COLUMNA DERECHA ── -->
+        <aside class="sidebar-right">
+            <div class="right-featured">
+                <div class="img-placeholder medium"><span class="ph-x"></span></div>
+                <div class="img-placeholder medium"><span class="ph-x"></span></div>
+                <div class="img-placeholder medium"><span class="ph-x"></span></div>
+            </div>
+            <button class="btn-ver-todo" onclick="verTodo()">VER TODO</button>
+            <div class="right-icons">
+                <div class="icon-item"><span class="icon-ph"></span><span class="icon-label">Favoritos</span></div>
+                <div class="icon-item"><span class="icon-ph"></span><span class="icon-label">Carrito</span></div>
+                <div class="icon-item"><span class="icon-ph"></span><span class="icon-label">Perfil</span></div>
+            </div>
+        </aside>
+
+    </div><!-- /layout -->
+    <!-- ══════════════════════════════════════
+         NAVBAR INFERIOR
+    ══════════════════════════════════════ -->
+    <nav class="bottom-nav">
+        <div class="hamburger-nav">
+            <span></span><span></span><span></span>
         </div>
-    </section>
 
-    <section class="productos">
-        <h2>Productos</h2>
-        <div id="contenedorProductos" class="grid"></div>
-    </section>
+        <div class="nav-links">
+            <a href="#">☰ Inicio</a>
+            <a href="#">Productos</a>
+            <a href="sobre-nosotros.html">Sobre Nosotros</a>
+            <a href="#">Contáctanos</a>
+        </div>
+
+        <div class="nav-center-logo">
+            <span class="logo-box sm">A</span>
+        </div>
+
+        <div class="nav-auth" id="navAuth">
+            <!-- Se llena dinámicamente por JS -->
+        </div>
+    </nav>
 
     <script src="js/app.js"></script>
 </body>
