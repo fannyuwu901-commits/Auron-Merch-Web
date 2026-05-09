@@ -172,6 +172,12 @@
 
         </div>
     </div>
+    <div id="site-footer"></div>
+    <script>
+        fetch('footer.html')
+            .then(r => r.text())
+            .then(html => document.getElementById('site-footer').innerHTML = html);
+    </script>
 
     <script src="js/app.js"></script>
 </body>

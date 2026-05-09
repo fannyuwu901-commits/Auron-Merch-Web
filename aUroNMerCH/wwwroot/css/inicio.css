@@ -1483,3 +1483,56 @@ body {
 .drawer-header {
     background: #000;
 }
+
+footer {
+    background: #1C1C1C;
+    color: rgba(255,255,255,0.7);
+    padding: 4rem;
+}
+
+.footer-tagline {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    letter-spacing: 0.04em;
+}
+
+.footer-icons {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+}
+
+.footer-icon {
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.25s;
+}
+
+    .footer-icon:hover {
+        border-color: #B5743A;
+        background: rgba(181,116,58,0.15);
+    }
+
+    .footer-icon svg {
+        width: 18px;
+        height: 18px;
+        fill: rgba(255,255,255,0.7);
+    }
+
+.footer-copy {
+    text-align: center;
+    font-size: 0.82rem;
+    line-height: 2;
+    color: rgba(255,255,255,0.4);
+}
