@@ -2,100 +2,59 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Registro</title>
-
-    <style>
-        body {
-            font-family: Arial;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: #f2f2f2;
-        }
-
-        .container {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            width: 300px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 15px;
-            background: black;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-            button:hover {
-                background: #333;
-            }
-
-        p {
-            margin-top: 15px;
-            text-align: center;
-        }
-
-        a {
-            color: blue;
-            text-decoration: none;
-        }
-
-            a:hover {
-                text-decoration: underline;
-            }
-
-        .error {
-            color: red;
-            margin-top: 10px;
-            font-size: 14px;
-            text-align: center;
-        }
-
-        .success {
-            color: green;
-            margin-top: 10px;
-            font-size: 14px;
-            text-align: center;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro — Auron</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/register.css">
 </head>
 <body>
 
-    <div class="container">
-        <h2>Registro</h2>
+    <div class="auth-card">
 
-        <input type="text" id="username" placeholder="Usuario">
-        <input type="email" id="email" placeholder="Correo">
-        <input type="password" id="password" placeholder="Contraseña">
+        <!-- LOGO -->
+        <div class="auth-logo">
+            <img src="img/logo.png" alt="Auron Merch" />
+        </div>
 
-        <button onclick="register()">Registrarse</button>
+        <!-- NOMBRE TIENDA -->
+        <span class="auth-brand">AURON MERCH</span>
 
-        <div id="mensaje"></div>
 
-        <p>
+        <!-- TÍTULO -->
+        <h1 class="auth-title">REGISTRARSE</h1>
+
+        <!-- FORMULARIO -->
+        <div class="auth-form" id="authForm">
+
+            <div class="field-group">
+                <label class="field-label" for="username">USUARIO</label>
+                <input class="field-input" type="text" id="username" placeholder="Tu nombre de usuario" autocomplete="username">
+            </div>
+
+            <div class="field-group">
+                <label class="field-label" for="email">EMAIL</label>
+                <input class="field-input" type="email" id="email" placeholder="tu@correo.com" autocomplete="email">
+            </div>
+
+            <div class="field-group">
+                <label class="field-label" for="password">CONTRASEÑA</label>
+                <input class="field-input" type="password" id="password" placeholder="••••••••" autocomplete="new-password">
+            </div>
+
+            <button class="btn-submit" onclick="register()">CREAR CUENTA</button>
+
+            <div id="mensaje"></div>
+
+        </div>
+
+        <!-- LINK LOGIN -->
+        <p class="auth-footer-text">
             ¿Ya tienes cuenta?
-            <a href="login.html">Inicia sesión</a>
+            <a href="login.html" class="auth-link">Inicia sesión</a>
         </p>
-    </div>
-    <div id="site-footer"></div>
-    <script>
-        fetch('footer.html')
-            .then(r => r.text())
-            .then(html => document.getElementById('site-footer').innerHTML = html);
-    </script>
-    <script src="js/register.js"></script>
 
+    </div>
+
+    <script src="js/register.js"></script>
 </body>
 </html>
