@@ -6,6 +6,7 @@
     <title>Contáctanos — Auron</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/contacto.css">
+    <link rel="stylesheet" href="css/inicio.css?v=2">
 </head>
 <body>
 
@@ -19,9 +20,8 @@
             </button>
         </div>
         <div class="nav-center">
-            <a href="index.html" class="nav-logo">
-                <span class="logo-box">A</span>
-                <span class="logo-text">AURON</span>
+            <a href="#" class="nav-logo">
+                <img src="img/logo.jpeg" alt="Auron Merch" />
             </a>
         </div>
         <div class="nav-right">
@@ -36,22 +36,45 @@
             <div class="nav-auth" id="navAuth"></div>
         </div>
     </nav>
-
     <!-- ══════════════════════════════════════
-         DRAWER
+         DRAWER (menú lateral izquierdo)
     ══════════════════════════════════════ -->
     <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
     <aside class="drawer" id="drawer">
         <div class="drawer-header">
-            <span class="logo-box">A</span>
-            <span class="logo-text">AURON</span>
+            <img src="img/logo.jpeg" alt="Auron Merch" />
             <button class="drawer-close" onclick="toggleDrawer()">✕</button>
         </div>
         <nav class="drawer-links">
-            <a href="index.html">Inicio</a>
-            <a href="productos.html">Productos</a>
-            <a href="sobreNosotros.html">Sobre Nosotros</a>
-            <a href="contacto.html" class="active">Contáctanos</a>
+            <a href="index.html">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
+                    <path d="M9 21V12h6v9" />
+                </svg>
+                Inicio
+            </a>
+            <a href="productos.html">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z" />
+                </svg>
+                Productos
+            </a>
+            <a href="sobreNosotros.html">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+                Sobre Nosotros
+            </a>
+            <a href="contacto.html">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                </svg>
+                Contáctanos
+            </a>
         </nav>
         <div class="drawer-divider"></div>
         <div class="drawer-categorias">
@@ -112,16 +135,11 @@
     <div class="page-layout">
 
         <!-- ── COLUMNA IMAGEN IZQUIERDA ── -->
-        <div class="col-img">
-            <div class="img-hero">
-                <div class="img-placeholder">
-                    <span class="ph-x"></span>
-                </div>
-                <div class="img-overlay">
-                    <p class="img-label">DROP 2026</p>
-                    <h2 class="img-headline">Hablemos.</h2>
-                    <p class="img-sub">Estamos aquí para lo que necesites.</p>
-                </div>
+        <div class="img-hero">
+            <img src="img/rodolfo.png" alt="Rodolfo" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <div class="img-overlay">
+                <h2 class="img-headline">Hablemos.</h2>
+                <p class="img-sub">Estamos aquí para lo que necesites.</p>
             </div>
         </div>
 
@@ -179,25 +197,7 @@
 
             </div>
         </div>
-        <!-- FOOTER -->
-        <footer>
-            <div class="footer-tagline">"La calidad nunca es un accidente."</div>
-            <div class="footer-icons">
-                <div class="footer-icon" title="Instagram">
-                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" /></svg>
-                </div>
-                <div class="footer-icon" title="Facebook">
-                    <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /></svg>
-                </div>
-                <div class="footer-icon" title="X">
-                    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
-                </div>
-            </div>
-            <div class="footer-copy">
-                <p>© 2025 Auron. Todos los derechos reservados.</p>
-                <p>Hecho con dedicación · República Dominicana</p>
-            </div>
-        </footer>
+       
         <script src="js/contacto.js"></script>
 </body>
 </html>
