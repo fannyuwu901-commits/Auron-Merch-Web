@@ -6,7 +6,45 @@
     <title>Contáctanos — Auron</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/contacto.css">
-    <link rel="stylesheet" href="css/inicio.css?v=2">
+    <style>
+        .nav-logo img {
+            height: 36px !important;
+            width: auto !important;
+            display: block !important;
+            max-height: 36px !important;
+        }
+
+        .drawer-header img {
+            height: 30px !important;
+            width: auto !important;
+            display: block !important;
+            max-height: 30px !important;
+        }
+
+        /* SVGs alineados con texto */
+        .drawer-links a {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.6rem !important;
+        }
+
+            .drawer-links a svg {
+                flex-shrink: 0 !important;
+            }
+
+        /* Fondo negro navbar y drawer */
+        .top-nav {
+            background: #000 !important;
+        }
+
+        .drawer {
+            background: #000 !important;
+        }
+
+        .drawer-header {
+            background: #000 !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -198,6 +236,7 @@
             </div>
         </div>
        
+
         <script src="js/contacto.js"></script>
 </body>
 </html>
